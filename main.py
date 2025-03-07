@@ -1,11 +1,11 @@
+import sys
+from stats import count_word
+
 def get_book_text(file_path):
     with open(file_path) as f:
         file_contents = f.read()
         return file_contents
 
-def count_word(text):
-    words = text.split()
-    return len(words)
 
 def count_characters(text):
     count = {}
@@ -33,19 +33,27 @@ def sort_count_characters(count_character_dict):
     return list_of_letter
 
 def main():
-    book_path = 'books/frankenstein.txt'
+    if len(sys.argv) < 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+
+    book_path = sys.argv[1]
     text = get_book_text(book_path)
     no_of_words = count_word(text)
     character_count = count_characters(text)
     sorted_character_count = sort_count_characters(character_count)
 
-    print(f"--- Begin report of {book_path} ---")
-    print(f"{no_of_words} words found in the document")
-    print()
-    print()
+    print("============ BOOKBOT ============")
+    print(f"Analyzing book found at {book_path}...")
+    print("----------- Word Count ----------")
+    print(f"Found {no_of_words} total words")
+    print("--------- Character Count -------")
+
     for i in sorted_character_count:
         letter = i["letter"]
         freq = i["freq"]
-        print(f"The '{letter}' character was found {freq} times")
+        print(f"{letter}: {freq}")
+
+    print("============= END ===============")
 
 main()
